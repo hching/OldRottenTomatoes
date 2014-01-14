@@ -11,7 +11,8 @@
 @interface Movie : NSObject
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *cast;
+@property (nonatomic, strong) NSString *synopsis;
+@property (nonatomic, strong) NSString *posterURL;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 

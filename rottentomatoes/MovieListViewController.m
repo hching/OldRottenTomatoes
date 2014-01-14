@@ -10,10 +10,11 @@
 #import "MovieCell.h"
 #import "Movie.h"
 #import "UIImageView+AFNetworking.h"
+#import "MovieViewController.h"
 
 @interface MovieListViewController ()
 
-@property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) NSMutableArray *movies;
 
 @end
 
@@ -23,7 +24,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        self.movies = [NSArray array];
+        
     }
     return self;
 }
@@ -31,6 +32,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
+        self.movies = [NSMutableArray array];
         NSString *url = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=g9au4hv6khv6wzvzgt55gpqs";
         
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -38,7 +40,10 @@
             completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-            self.movies = [object valueForKeyPath:@"movies"];
+            for(NSDictionary *movie in [object valueForKeyPath:@"movies"]) {
+                Movie *obj = [[Movie alloc] initWithDictionary:movie];
+                [self.movies addObject:obj];
+            }
                 
             NSLog(@"%@", object);
             [self.tableView reloadData];
@@ -79,69 +84,25 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"MovieCell";
-    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     MovieCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    NSDictionary *movie = [self.movies objectAtIndex:indexPath.row];
-    
-    //cell.textLabel.text = [movie objectForKey:@"title"];
-    //cell.movieTitleLabel.text = [movie objectForKey:@"title"];
-    cell.movieTitleLabel.text = [movie objectForKey:@"title"];
-    cell.movieSynopsisLabel.text = [movie objectForKey:@"synopsis"];
-    [cell.posterImageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[movie objectForKey:@"posters"] objectForKey:@"thumbnail"]]]];
+    Movie *movie = [self.movies objectAtIndex:indexPath.row];
+    cell.movieTitleLabel.text = movie.title;
+    cell.movieSynopsisLabel.text = movie.synopsis;
+    [cell.posterImageView setImageWithURL:[NSURL URLWithString:movie.posterURL]];
     
     return cell;
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    UITableViewCell *selectedCell = (UITableViewCell *)sender;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:selectedCell];
+    Movie *movie = self.movies[indexPath.row];
+    
+    MovieViewController *movieViewController = (MovieViewController *)segue.destinationViewController;
+    movieViewController.movie = movie;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
  */
 
 @end

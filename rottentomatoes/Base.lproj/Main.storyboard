@@ -43,7 +43,7 @@
                                     <outlet property="movieSynopsisLabel" destination="clu-DR-Lxk" id="feP-g4-fjE"/>
                                     <outlet property="movieTitleLabel" destination="fLq-E2-khN" id="NPa-n4-sNr"/>
                                     <outlet property="posterImageView" destination="CcJ-1X-2b8" id="Pg8-M0-czF"/>
-                                    <segue destination="YIS-L5-gid" kind="push" id="YMf-cf-OlG"/>
+                                    <segue destination="YIS-L5-gid" kind="push" identifier="gotoMovie" id="YMf-cf-OlG"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -69,6 +69,18 @@
                     <view key="view" contentMode="scaleToFill" id="00n-5G-M1J">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BTw-Z2-iEX">
+                                <rect key="frame" x="10" y="75" width="89" height="137"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This is summary" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" preferredMaxLayoutWidth="301" translatesAutoresizingMaskIntoConstraints="NO" id="3cq-6g-cOV">
+                                <rect key="frame" x="10" y="220" width="301" height="142"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Frozen" id="tcL-v3-plf"/>

@@ -11,7 +11,14 @@
 @implementation Movie
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
-    return 0;
+    
+    self.title = [dictionary objectForKey:@"title"];
+    self.synopsis = [dictionary objectForKey:@"synopsis"];
+    
+    NSDictionary *posters = [dictionary objectForKey:@"posters"];
+    self.posterURL = [posters objectForKey:@"thumbnail"];
+    
+    return self;
 }
 
 @end
